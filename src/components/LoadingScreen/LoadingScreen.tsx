@@ -66,12 +66,11 @@ function LoadingScreen(props: Props) {
     <div class={`loading-screen ${isFadingOut() ? 'fade-out' : ''}`}>
       <div class="loading-content">
         <div>
-          <div class="loading-logo">Majestic</div>
-          <div class="loading-subtitle">ДИСКЛЕЙМЕР</div>
+          <div class="loading-logo">PROJECT ROLE PLAY</div>
         </div>
         
         <div class="loading-disclaimer">
-          Majestic RP не связана и не поддерживается Take-Two, Rockstar North. 
+          Мы не связана и не поддерживается Take-Two, Rockstar North. 
           Rockstar или любым другим правообладателем. Все используемые 
           торговые знаки принадлежат их соответствующим владельцам и не 
           связаны и не одобряют Take-Two, Rockstar North Rockstar.
