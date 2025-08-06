@@ -1,4 +1,5 @@
 import { createSignal, onMount } from 'solid-js'
+import LoadingScreen from './components/LoadingScreen/LoadingScreen'
 import AuthForm from './components/AuthForm/AuthForm'
 import CharacterMenu from './components/CharacterMenu/CharacterMenu'
 import CharacterEditor from './components/CharacterEditor/CharacterEditor'
@@ -7,11 +8,18 @@ import { AuthData, Character } from './types'
 import './App.css'
 
 type AppState = 'auth' | 'character-menu' | 'character-editor'
+type LoadingState = 'loading' | 'loaded'
 
 function App() {
+  const [loadingState, setLoadingState] = createSignal<LoadingState>('loading')
   const [currentState, setCurrentState] = createSignal<AppState>('auth')
   const [characters, setCharacters] = createSignal<Character[]>([])
   const [maxCharacters, setMaxCharacters] = createSignal(3)
+
+  // Обработчик завершения загрузки
+  const handleLoadingComplete = () => {
+    setLoadingState('loaded')
+  }
 
   // Обработчик успешной авторизации
   const handleAuthSuccess = (authData: AuthData) => {
@@ -97,6 +105,11 @@ function App() {
       })
     }
   })
+
+  // Показываем загрузочный экран, если загрузка не завершена
+  if (loadingState() === 'loading') {
+    return <LoadingScreen onLoadingComplete={handleLoadingComplete} />
+  }
 
   return (
     <div class="app">
