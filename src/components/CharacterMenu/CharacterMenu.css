@@ -1,0 +1,121 @@
+.character-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.character-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.header-content h1 {
+  color: #4CAF50;
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.header-content p {
+  color: #cccccc;
+  font-size: 16px;
+  margin: 0;
+}
+
+.logout-button {
+  background: rgba(244, 67, 54, 0.1);
+  border: 2px solid #f44336;
+  border-radius: 8px;
+  padding: 12px 24px;
+  color: #f44336;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.logout-button:hover {
+  background: rgba(244, 67, 54, 0.2);
+  box-shadow: 0 0 15px rgba(244, 67, 54, 0.3);
+  transform: translateY(-2px);
+}
+
+.character-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 120px;
+  position: relative;
+}
+
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  gap: 20px;
+  justify-content: center;
+}
+
+.create-character-button {
+  position: fixed;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px dashed rgba(76, 175, 80, 0.5);
+  border-radius: 12px;
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 120px;
+  height: 120px;
+}
+
+.create-character-button:hover {
+  border-color: #4CAF50;
+  border-style: solid;
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+  transform: translateY(-5px);
+}
+
+.create-icon {
+  font-size: 32px;
+  color: #4CAF50;
+  font-weight: 300;
+}
+
+.create-character-button h3 {
+  color: #4CAF50;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.create-character-button p {
+  color: #cccccc;
+  font-size: 11px;
+  margin: 0;
+  text-align: center;
+  line-height: 1.2;
+}

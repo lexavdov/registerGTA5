@@ -1,0 +1,91 @@
+.language-selector {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 999;
+}
+
+.language-button {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid rgba(76, 175, 80, 0.3);
+  border-radius: 8px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.language-button:hover {
+  border-color: #4CAF50;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+  transform: translateY(-2px);
+}
+
+.flag {
+  font-size: 18px;
+}
+
+.language-code {
+  color: #4CAF50;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.language-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 10px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid #4CAF50;
+  border-radius: 6px;
+  padding: 10px 15px;
+  color: #cccccc;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+  animation: fadeInOut 3s ease-in-out;
+}
+
+.language-tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 20px;
+  border: 5px solid transparent;
+  border-bottom-color: #4CAF50;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .language-selector {
+    top: 10px;
+    left: 10px;
+  }
+  
+  .language-button {
+    padding: 8px 12px;
+  }
+  
+  .language-tooltip {
+    font-size: 11px;
+    padding: 8px 12px;
+  }
+}
