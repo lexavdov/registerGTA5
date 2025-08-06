@@ -8,17 +8,16 @@ import { AuthData, Character } from './types'
 import './App.css'
 
 type AppState = 'auth' | 'character-menu' | 'character-editor'
-type LoadingState = 'loading' | 'loaded'
 
 function App() {
-  const [loadingState, setLoadingState] = createSignal<LoadingState>('loading')
+  const [isLoading, setIsLoading] = createSignal(true)
   const [currentState, setCurrentState] = createSignal<AppState>('auth')
   const [characters, setCharacters] = createSignal<Character[]>([])
   const [maxCharacters, setMaxCharacters] = createSignal(3)
 
   // Обработчик завершения загрузки
   const handleLoadingComplete = () => {
-    setLoadingState('loaded')
+    setIsLoading(false)
   }
 
   // Обработчик успешной авторизации
@@ -106,33 +105,35 @@ function App() {
     }
   })
 
-  // Показываем загрузочный экран, если загрузка не завершена
-  if (loadingState() === 'loading') {
-    return <LoadingScreen onLoadingComplete={handleLoadingComplete} />
-  }
 
   return (
     <div class="app">
-      {currentState() !== 'character-editor' && <LanguageSelector />}
-      
-      {currentState() === 'auth' ? (
-        <AuthForm 
-          onAuthSuccess={handleAuthSuccess}
-          onRegister={handleRegister}
-        />
-      ) : currentState() === 'character-menu' ? (
-        <CharacterMenu
-          characters={characters()}
-          maxCharacters={maxCharacters()}
-          onCharacterSelect={handleCharacterSelect}
-          onCreateCharacter={handleCreateCharacter}
-          onLogout={handleLogout}
-        />
+      {isLoading() ? (
+        <LoadingScreen onLoadingComplete={handleLoadingComplete} />
       ) : (
-        <CharacterEditor
-          onCharacterCreated={handleCharacterCreated}
-          onCancel={handleCancelCharacterCreation}
-        />
+        <>
+          {currentState() !== 'character-editor' && <LanguageSelector />}
+          
+          {currentState() === 'auth' ? (
+            <AuthForm 
+              onAuthSuccess={handleAuthSuccess}
+              onRegister={handleRegister}
+            />
+          ) : currentState() === 'character-menu' ? (
+            <CharacterMenu
+              characters={characters()}
+              maxCharacters={maxCharacters()}
+              onCharacterSelect={handleCharacterSelect}
+              onCreateCharacter={handleCreateCharacter}
+              onLogout={handleLogout}
+            />
+          ) : (
+            <CharacterEditor
+              onCharacterCreated={handleCharacterCreated}
+              onCancel={handleCancelCharacterCreation}
+            />
+          )}
+        </>
       )}
     </div>
   )
