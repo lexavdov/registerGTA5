@@ -65,9 +65,8 @@ function AuthForm(props: Props) {
     e.preventDefault()
     const newErrors: Record<string, string> = {}
 
-    if (!login().trim()) newErrors.login = 'Логин обязателен'
-    if (!password().trim()) newErrors.password = 'Пароль обязателен'
-    else if (password().length < 6) newErrors.password = 'Минимум 6 символов'
+    if (!login().trim()) newErrors.login
+    if (!password().trim()) newErrors.password
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
