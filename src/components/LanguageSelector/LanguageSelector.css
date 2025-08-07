@@ -3,6 +3,7 @@
   top: 20px;
   left: 20px;
   z-index: 999;
+  position: relative;
 }
 
 .language-button {
@@ -23,8 +24,10 @@
   transform: translateY(-2px);
 }
 
-.flag {
-  font-size: 18px;
+.language-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
 }
 
 .language-code {
@@ -34,44 +37,53 @@
   letter-spacing: 0.5px;
 }
 
-.language-tooltip {
+.language-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
   margin-top: 10px;
   background: rgba(0, 0, 0, 0.95);
-  border: 1px solid #4CAF50;
-  border-radius: 6px;
-  padding: 10px 15px;
+  border: 2px solid #4CAF50;
+  border-radius: 8px;
+  min-width: 150px;
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+.language-option {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
   color: #cccccc;
-  font-size: 12px;
-  white-space: nowrap;
-  box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
-  animation: fadeInOut 3s ease-in-out;
+  font-size: 18px;
 }
 
-.language-tooltip::before {
-  content: '';
-  position: absolute;
-  bottom: 100%;
-  left: 20px;
-  border: 5px solid transparent;
-  border-bottom-color: #4CAF50;
+.language-option:hover {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
 }
 
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  10%, 90% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
+.language-option.active {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+}
+
+.language-option-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+}
+
+.language-option-name {
+  font-size: 14px;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
@@ -84,8 +96,11 @@
     padding: 8px 12px;
   }
   
-  .language-tooltip {
-    font-size: 11px;
-    padding: 8px 12px;
+  .language-dropdown {
+    min-width: 120px;
+  }
+  
+  .language-option {
+    padding: 10px 12px;
   }
 }

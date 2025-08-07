@@ -1,5 +1,8 @@
 import { createSignal, onMount } from 'solid-js'
+import { LanguageProvider } from './contexts/LanguageContext'
 import LoadingScreen from './components/LoadingScreen/LoadingScreen'
+import ActivityCheck from './components/ActivityCheck/ActivityCheck'
+import BackgroundMusic from './components/BackgroundMusic/BackgroundMusic'
 import AuthForm from './components/AuthForm/AuthForm'
 import CharacterMenu from './components/CharacterMenu/CharacterMenu'
 import CharacterEditor from './components/CharacterEditor/CharacterEditor'
@@ -7,22 +10,31 @@ import LanguageSelector from './components/LanguageSelector/LanguageSelector'
 import { AuthData, Character } from './types'
 import './App.css'
 
-type AppState = 'auth' | 'character-menu' | 'character-editor'
+type AppState = 'loading' | 'activity-check' | 'auth' | 'character-menu' | 'character-editor'
 
 function App() {
-  const [isLoading, setIsLoading] = createSignal(true)
-  const [currentState, setCurrentState] = createSignal<AppState>('auth')
+  const [currentState, setCurrentState] = createSignal<AppState>('loading')
   const [characters, setCharacters] = createSignal<Character[]>([])
   const [maxCharacters, setMaxCharacters] = createSignal(3)
+  const [showBackground, setShowBackground] = createSignal(false)
+  const [playMusic, setPlayMusic] = createSignal(false)
 
   // Обработчик завершения загрузки
   const handleLoadingComplete = () => {
-    setIsLoading(false)
+    setCurrentState('activity-check')
+    setShowBackground(true)
+    setPlayMusic(true)
+  }
+
+  // Обработчик подтверждения активности
+  const handleActivityConfirmed = () => {
+    setCurrentState('auth')
   }
 
   // Обработчик успешной авторизации
   const handleAuthSuccess = (authData: AuthData) => {
     console.log('Auth success:', authData)
+    setShowBackground(false) // Убираем фон после авторизации
     // @ts-ignore - Alt:V API
     if (typeof alt !== 'undefined') {
       alt.emit('auth.login', authData.login, authData.password)
@@ -33,6 +45,7 @@ function App() {
   // Обработчик регистрации
   const handleRegister = (authData: AuthData & { email: string; referral?: string }) => {
     console.log('Register:', authData)
+    setShowBackground(false) // Убираем фон после регистрации
     // @ts-ignore - Alt:V API
     if (typeof alt !== 'undefined') {
       alt.emit('auth.register', authData.login, authData.password, authData.email, authData.referral || '')
@@ -72,6 +85,7 @@ function App() {
 
   // Обработчик выхода
   const handleLogout = () => {
+    setShowBackground(true) // Возвращаем фон при выходе
     setCurrentState('auth')
     setCharacters([])
   }
@@ -107,35 +121,46 @@ function App() {
 
 
   return (
-    <div class="app">
-      {isLoading() ? (
-        <LoadingScreen onLoadingComplete={handleLoadingComplete} />
-      ) : (
-        <>
-          {currentState() !== 'character-editor' && <LanguageSelector />}
-          
-          {currentState() === 'auth' ? (
-            <AuthForm 
-              onAuthSuccess={handleAuthSuccess}
-              onRegister={handleRegister}
-            />
-          ) : currentState() === 'character-menu' ? (
-            <CharacterMenu
-              characters={characters()}
-              maxCharacters={maxCharacters()}
-              onCharacterSelect={handleCharacterSelect}
-              onCreateCharacter={handleCreateCharacter}
-              onLogout={handleLogout}
-            />
-          ) : (
-            <CharacterEditor
-              onCharacterCreated={handleCharacterCreated}
-              onCancel={handleCancelCharacterCreation}
-            />
-          )}
-        </>
-      )}
-    </div>
+    <LanguageProvider>
+      <div class="app" style={{
+        'background-image': showBackground() ? 'url(/public/fon.jpg)' : 'none',
+        'background-size': 'cover',
+        'background-position': 'center',
+        'background-attachment': 'fixed'
+      }}>
+        <BackgroundMusic isPlaying={playMusic()} />
+        
+        {currentState() === 'loading' ? (
+          <LoadingScreen onLoadingComplete={handleLoadingComplete} />
+        ) : currentState() === 'activity-check' ? (
+          <ActivityCheck onActivityConfirmed={handleActivityConfirmed} />
+        ) : (
+          <>
+            {currentState() !== 'character-editor' && <LanguageSelector />}
+            
+            {currentState() === 'auth' ? (
+              <AuthForm 
+                onAuthSuccess={handleAuthSuccess}
+                onRegister={handleRegister}
+              />
+            ) : currentState() === 'character-menu' ? (
+              <CharacterMenu
+                characters={characters()}
+                maxCharacters={maxCharacters()}
+                onCharacterSelect={handleCharacterSelect}
+                onCreateCharacter={handleCreateCharacter}
+                onLogout={handleLogout}
+              />
+            ) : (
+              <CharacterEditor
+                onCharacterCreated={handleCharacterCreated}
+                onCancel={handleCancelCharacterCreation}
+              />
+            )}
+          </>
+        )}
+      </div>
+    </LanguageProvider>
   )
 }
 

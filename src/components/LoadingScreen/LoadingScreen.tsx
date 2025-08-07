@@ -1,4 +1,5 @@
 import { createSignal, createEffect, onCleanup } from 'solid-js'
+import { useLanguage } from '../../contexts/LanguageContext'
 import './LoadingScreen.css'
 
 interface Props {
@@ -7,31 +8,33 @@ interface Props {
 
 function LoadingScreen(props: Props) {
   const [progress, setProgress] = createSignal(0)
-  const [status, setStatus] = createSignal('Инициализация...')
+  const [status, setStatus] = createSignal('')
   const [isVisible, setIsVisible] = createSignal(true)
   const [isFadingOut, setIsFadingOut] = createSignal(false)
+  const { t } = useLanguage()
 
-  const loadingSteps = [
-    { progress: 15, status: 'Загрузка ресурсов...', delay: 800 },
-    { progress: 35, status: 'Подключение к серверу...', delay: 1200 },
-    { progress: 55, status: 'Проверка соединения...', delay: 1000 },
-    { progress: 75, status: 'Загрузка интерфейса...', delay: 1200 },
-    { progress: 90, status: 'Финализация...', delay: 800 },
-    { progress: 100, status: 'Готово!', delay: 500 }
+  const getLoadingSteps = () => [
+    { progress: 15, status: t('loading.resources'), delay: 800 },
+    { progress: 35, status: t('loading.server'), delay: 1200 },
+    { progress: 55, status: t('loading.connection'), delay: 1000 },
+    { progress: 75, status: t('loading.interface'), delay: 1200 },
+    { progress: 90, status: t('loading.finalizing'), delay: 800 },
+    { progress: 100, status: t('loading.ready'), delay: 500 }
   ]
 
   let currentStep = 0
   let timeoutId: number
 
   const runLoadingStep = () => {
-    if (currentStep < loadingSteps.length) {
-      const step = loadingSteps[currentStep]
+    const steps = getLoadingSteps()
+    if (currentStep < steps.length) {
+      const step = steps[currentStep]
       setProgress(step.progress)
       setStatus(step.status)
       
       timeoutId = setTimeout(() => {
         currentStep++
-        if (currentStep < loadingSteps.length) {
+        if (currentStep < steps.length) {
           runLoadingStep()
         } else {
           // Завершение загрузки
@@ -49,6 +52,7 @@ function LoadingScreen(props: Props) {
 
   createEffect(() => {
     // Начинаем загрузку через небольшую задержку
+    setStatus(t('loading.initializing'))
     timeoutId = setTimeout(() => {
       runLoadingStep()
     }, 500)
@@ -66,14 +70,11 @@ function LoadingScreen(props: Props) {
     <div class={`loading-screen ${isFadingOut() ? 'fade-out' : ''}`}>
       <div class="loading-content">
         <div>
-          <div class="loading-logo">PROJECT ROLE PLAY</div>
+          <div class="loading-logo">{t('loading.title')}</div>
         </div>
         
         <div class="loading-disclaimer">
-          Мы не связана и не поддерживается Take-Two, Rockstar North. 
-          Rockstar или любым другим правообладателем. Все используемые 
-          торговые знаки принадлежат их соответствующим владельцам и не 
-          связаны и не одобряют Take-Two, Rockstar North Rockstar.
+          {t('loading.disclaimer')}
         </div>
         
         <div class="loading-progress-container">
