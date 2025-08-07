@@ -1,4 +1,5 @@
 import { createSignal, onMount } from 'solid-js'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { AuthData } from '../../types'
 import RulesModal from '../RulesModal/RulesModal'
 import './AuthForm.css'
@@ -12,6 +13,7 @@ interface Props {
 
 function AuthForm(props: Props) {
   const [mode, setMode] = createSignal<FormMode>('login')
+  const { t } = useLanguage()
   const [login, setLogin] = createSignal('')
   const [password, setPassword] = createSignal('')
   const [email, setEmail] = createSignal('')
@@ -136,8 +138,8 @@ function AuthForm(props: Props) {
       <div class="auth-container">
         <div class="auth-card">
           <div class="auth-header">
-            <h1>{mode() === 'login' ? 'Вход в игру' : 'Регистрация'}</h1>
-            <p>{mode() === 'login' ? 'Введите данные для входа' : 'Создайте новый аккаунт'}</p>
+            <h1>{mode() === 'login' ? t('auth.login.title') : t('auth.register.title')}</h1>
+            <p>{mode() === 'login' ? t('auth.login.subtitle') : t('auth.register.subtitle')}</p>
           </div>
 
           {mode() === 'login' ? (
@@ -148,7 +150,7 @@ function AuthForm(props: Props) {
                   value={login()}
                   onInput={(e) => setLogin(e.currentTarget.value)}
                   class={`form-input ${errors().login ? 'error' : ''}`}
-                  placeholder="Логин или Email"
+                  placeholder={t('auth.login.placeholder')}
                   disabled={isLoading()}
                 />
                 {errors().login && <span class="error-message">{errors().login}</span>}
@@ -160,7 +162,7 @@ function AuthForm(props: Props) {
                   value={password()}
                   onInput={(e) => setPassword(e.currentTarget.value)}
                   class={`form-input ${errors().password ? 'error' : ''}`}
-                  placeholder="Пароль"
+                  placeholder={t('auth.password.placeholder')}
                   disabled={isLoading()}
                 />
                 {errors().password && <span class="error-message">{errors().password}</span>}
@@ -175,12 +177,12 @@ function AuthForm(props: Props) {
                     disabled={isLoading()}
                   />
                   <span class="checkmark"></span>
-                  Сохранить пароль
+                  {t('auth.rememberPassword')}
                 </label>
               </div>
 
               <button type="submit" class="auth-button" disabled={isLoading()}>
-                {isLoading() ? 'Вход...' : 'Войти'}
+                {isLoading() ? t('auth.login.loading') : t('auth.login.button')}
               </button>
             </form>
           ) : (
@@ -203,7 +205,7 @@ function AuthForm(props: Props) {
                   value={email()}
                   onInput={(e) => setEmail(e.currentTarget.value)}
                   class={`form-input ${errors().email ? 'error' : ''}`}
-                  placeholder="Email"
+                  placeholder={t('auth.email.placeholder')}
                   disabled={isLoading()}
                 />
                 {errors().email && <span class="error-message">{errors().email}</span>}
@@ -215,7 +217,7 @@ function AuthForm(props: Props) {
                   value={password()}
                   onInput={(e) => setPassword(e.currentTarget.value)}
                   class={`form-input ${errors().password ? 'error' : ''}`}
-                  placeholder="Пароль"
+                  placeholder={t('auth.password.placeholder')}
                   disabled={isLoading()}
                 />
                 {errors().password && <span class="error-message">{errors().password}</span>}
@@ -227,7 +229,7 @@ function AuthForm(props: Props) {
                   value={confirmPassword()}
                   onInput={(e) => setConfirmPassword(e.currentTarget.value)}
                   class={`form-input ${errors().confirmPassword ? 'error' : ''}`}
-                  placeholder="Повторите пароль"
+                  placeholder={t('auth.confirmPassword.placeholder')}
                   disabled={isLoading()}
                 />
                 {errors().confirmPassword && <span class="error-message">{errors().confirmPassword}</span>}
@@ -239,7 +241,7 @@ function AuthForm(props: Props) {
                   value={referral()}
                   onInput={(e) => setReferral(e.currentTarget.value)}
                   class="form-input"
-                  placeholder="Реферальный код (необязательно)"
+                  placeholder={t('auth.referral.placeholder')}
                   disabled={isLoading()}
                 />
               </div>
@@ -253,7 +255,7 @@ function AuthForm(props: Props) {
                     disabled={isLoading()}
                   />
                   <span class="checkmark"></span>
-                  Принимаю <button type="button" class="link-button" onClick={() => setShowRulesModal(true)}>правила сервера</button>
+                  {t('auth.acceptTerms')} <button type="button" class="link-button" onClick={() => setShowRulesModal(true)}>{t('auth.rules')}</button>
                 </label>
                 {errors().acceptTerms && <span class="error-message">{errors().acceptTerms}</span>}
               </div>
@@ -267,27 +269,27 @@ function AuthForm(props: Props) {
                     disabled={isLoading()}
                   />
                   <span class="checkmark"></span>
-                  Принимаю <button type="button" class="link-button" onClick={() => setShowPrivacyModal(true)}>политику конфиденциальности</button>
+                  {t('auth.acceptPrivacy')} <button type="button" class="link-button" onClick={() => setShowPrivacyModal(true)}>{t('auth.privacy')}</button>
                 </label>
                 {errors().acceptPrivacy && <span class="error-message">{errors().acceptPrivacy}</span>}
               </div>
 
               <button type="submit" class="auth-button" disabled={isLoading()}>
-                {isLoading() ? 'Регистрация...' : 'Зарегистрироваться'}
+                {isLoading() ? t('auth.register.loading') : t('auth.register.button')}
               </button>
             </form>
           )}
 
           <div class="auth-footer">
             <p>
-              {mode() === 'login' ? 'Нет аккаунта?' : 'Есть аккаунт?'}{' '}
+              {mode() === 'login' ? t('auth.noAccount') : t('auth.hasAccount')}{' '}
               <button 
                 type="button" 
                 class="switch-button" 
                 onClick={() => handleModeSwitch(mode() === 'login' ? 'register' : 'login')}
                 disabled={isLoading()}
               >
-                {mode() === 'login' ? 'Зарегистрироваться' : 'Войти'}
+                {mode() === 'login' ? t('auth.switchToRegister') : t('auth.switchToLogin')}
               </button>
             </p>
           </div>
@@ -296,11 +298,11 @@ function AuthForm(props: Props) {
         <div class="rules-info">
           <div class="rules-cell" onClick={() => setShowRulesModal(true)}>
             <div class="rules-icon">📋</div>
-            <span>Правила</span>
+            <span>{t('auth.rules')}</span>
           </div>
           <div class="rules-cell" onClick={() => setShowPrivacyModal(true)}>
             <div class="rules-icon">🔒</div>
-            <span>Политика</span>
+            <span>{t('auth.privacy')}</span>
           </div>
         </div>
 
@@ -309,9 +311,9 @@ function AuthForm(props: Props) {
             <div class="warning-cell">
               <div class="warning-icon">⚠️</div>
               <div class="warning-content">
-                <h4>Внимание!</h4>
-                <p>Будьте внимательны при заполнении данных. Мультиаккаунты запрещены!</p>
-                <p><strong>1 Аккаунт GTA 5 = 1 аккаунт на сервере</strong></p>
+                <h4>{t('auth.warning.title')}</h4>
+                <p>{t('auth.warning.text')}</p>
+                <p><strong>{t('auth.warning.rule')}</strong></p>
               </div>
             </div>
           </div>
