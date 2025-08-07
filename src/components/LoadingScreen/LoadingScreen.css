@@ -76,7 +76,7 @@
   background: linear-gradient(90deg, #ff4757, #ff6b7a);
   border-radius: 2px;
   transition: width 0.3s ease;
-  box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+  box-shadow: 0 0 10px rgba(0,135,54,0.5);
 }
 
 .loading-progress-text {
