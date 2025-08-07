@@ -151,7 +151,7 @@
 }
 
 .auth-button {
-  background: linear-gradient(135deg, #4CAF50, #008736);
+  background: linear-gradient(135deg, #008736, #008736);
   border: none;
   border-radius: 8px;
   padding: 14px 20px;
