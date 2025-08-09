@@ -6,7 +6,7 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  background: linear-gradient(135deg, #1f1f1f 0%, #2d2d2d 50%, #1f1f1f 100%);
   color: #ffffff;
   overflow-x: hidden;
   min-height: 100vh;
@@ -28,12 +28,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(76, 175, 80, 0.6);
+  background: rgba(0, 135, 54, 0.6);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(76, 175, 80, 0.8);
+  background: rgba(0, 135, 54, 0.8);
 }
 
 /* Анимации */
@@ -61,10 +61,10 @@ body {
 
 @keyframes pulse {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 0 20px rgba(0, 135, 54, 0.3);
   }
   50% {
-    box-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+    box-shadow: 0 0 30px rgba(0, 135, 54, 0.5);
   }
 }
 

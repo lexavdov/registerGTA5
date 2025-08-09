@@ -24,8 +24,8 @@ const translations = {
     'loading.ready': 'Готово!',
     
     // Activity Check
-    'activity.title': 'Чтобы продолжить, нажмите',
-    'activity.instruction': 'ENTER или кликните мышью',
+    'activity.title': 'ЧТОБЫ ПРОДОЛЖИТЬ, НАЖМИТЕ',
+    'activity.instruction': '',
     
     // Language Selector
     'language.tooltip': 'Выберите язык',
@@ -41,10 +41,10 @@ const translations = {
     'auth.confirmPassword.placeholder': 'Повторите пароль',
     'auth.referral.placeholder': 'Реферальный код (необязательно)',
     'auth.rememberPassword': 'Сохранить пароль',
-    'auth.acceptTerms': 'Принимаю',
-    'auth.acceptPrivacy': 'Принимаю',
-    'auth.rules': 'правила сервера',
-    'auth.privacy': 'политику конфиденциальности',
+    'auth.acceptTerms': 'Принимаю правила сервера',
+    'auth.acceptPrivacy': 'Принимаю политику конфиденциальности',
+    'auth.rules': '',
+    'auth.privacy': '',
     'auth.login.button': 'Войти',
     'auth.register.button': 'Зарегистрироваться',
     'auth.login.loading': 'Вход...',

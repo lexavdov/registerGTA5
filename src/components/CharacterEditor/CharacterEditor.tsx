@@ -69,12 +69,10 @@ function CharacterEditor(props: Props) {
   }
 
   const tabs = [
-    { id: 'character', label: 'Персонаж', icon: '👤' },
-    { id: 'face', label: 'Лицо и Шея', icon: '😊' },
-    { id: 'body', label: 'Тело и кожа', icon: '🎨' },
-    { id: 'hair', label: 'Растительность', icon: '💇' },
-    { id: 'eyebrows', label: 'Брови', icon: '👁️' },
-    { id: 'makeup', label: 'Макияж', icon: '💄' },
+    { id: 'character', label: 'Наследственность', icon: '🧬' },
+    { id: 'face', label: 'Форма лица', icon: '👤' },
+    { id: 'hair', label: 'Волосы', icon: '💇' },
+    { id: 'body', label: 'Особенности кожи', icon: '🎨' },
     { id: 'clothing', label: 'Одежда', icon: '👕' },
   ] as const
 
@@ -84,14 +82,10 @@ function CharacterEditor(props: Props) {
         return <CharacterTab data={characterData()} updateData={updateCharacterData} />
       case 'face':
         return <FaceTab data={characterData()} updateData={updateCharacterData} />
-      case 'body':
-        return <BodyTab data={characterData()} updateData={updateCharacterData} />
       case 'hair':
         return <HairTab data={characterData()} updateData={updateCharacterData} />
-      case 'eyebrows':
-        return <EyebrowsTab data={characterData()} updateData={updateCharacterData} />
-      case 'makeup':
-        return <MakeupTab data={characterData()} updateData={updateCharacterData} />
+      case 'body':
+        return <BodyTab data={characterData()} updateData={updateCharacterData} />
       case 'clothing':
         return <ClothingTab data={characterData()} updateData={updateCharacterData} />
       default:
@@ -120,20 +114,82 @@ function CharacterEditor(props: Props) {
 
           {/* Main Content */}
           <div class="editor-main">
-            {/* Right Menu Panel */}
+            {/* Left Menu Panel */}
+            <div class="editor-left-panel">
+              <div class="editor-left-header">
+                <h3 class="editor-left-title">СОЗДАНИЕ ПЕРСОНАЖА</h3>
+              </div>
+              
+              <div class="editor-menu-list">
+                {tabs.map((tab) => (
+                  <div
+                    onClick={() => setActiveTab(tab.id as TabType)}
+                    class={`editor-menu-item ${activeTab() === tab.id ? 'active' : ''}`}
+                  >
+                    <span class="editor-menu-icon">{tab.icon}</span>
+                    <span class="editor-menu-label">{tab.label}</span>
+                    <span class="editor-menu-arrow">▶</span>
+                  </div>
+                ))}
+              </div>
+              
+              <div class="editor-bottom-section">
+                <button
+                  onClick={randomizeCharacter}
+                  class="editor-random-button"
+                >
+                  🎲 Случайный персонаж
+                </button>
+              </div>
+            </div>
+
+            {/* Right Content Panel */}
             <div class="editor-menu-panel">
-              {/* Tab Navigation */}
-              <div class="editor-tab-navigation">
-                <div class="editor-tab-grid">
-                  {tabs.map((tab) => (
-                    <button
-                      onClick={() => setActiveTab(tab.id as TabType)}
-                      class={`editor-tab-button ${activeTab() === tab.id ? 'active' : 'inactive'}`}
-                    >
-                      <span class="editor-tab-icon">{tab.icon}</span>
-                      <span class="editor-tab-label">{tab.label}</span>
-                    </button>
-                  ))}
+              <div class="editor-panel-header">
+                <h3 class="editor-panel-title">
+                  <span class="editor-panel-icon">
+                    {tabs.find(tab => tab.id === activeTab())?.icon}
+                  </span>
+                  {tabs.find(tab => tab.id === activeTab())?.label}
+                </h3>
+              </div>
+
+              <div class="editor-tab-content">
+                {renderTabContent()}
+              </div>
+            </div>
+          </div>
+
+          {/* Create Character Button - Fixed at bottom center */}
+          <div class="editor-create-section">
+            <button
+              onClick={createCharacter}
+              class="editor-create-btn"
+            >
+              Создать
+            </button>
+          </div>
+        </>
+      )}
+
+      {/* Modals */}
+      <ConfirmationModal
+        show={showConfirmation()}
+        onConfirm={handleConfirmCreate}
+        onCancel={handleCancelCreate}
+      />
+      
+      <NicknameModal
+        show={showNicknameInput()}
+        onSubmit={handleNicknameSubmit}
+        onCancel={handleNicknameCancel}
+      />
+    </div>
+  )
+}
+
+export default CharacterEditor
+
                 </div>
               </div>
 

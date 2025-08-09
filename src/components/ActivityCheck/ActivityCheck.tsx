@@ -41,9 +41,6 @@ function ActivityCheck(props: Props) {
         <div class="activity-text">
           {t('activity.title')}
         </div>
-        <div class="activity-instruction">
-          {t('activity.instruction')}
-        </div>
         <img 
           src="/src/assets/enter.svg" 
           alt="Enter" 

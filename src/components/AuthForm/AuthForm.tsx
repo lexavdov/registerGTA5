@@ -255,7 +255,7 @@ function AuthForm(props: Props) {
                     disabled={isLoading()}
                   />
                   <span class="checkmark"></span>
-                  {t('auth.acceptTerms')} <button type="button" class="link-button" onClick={() => setShowRulesModal(true)}>{t('auth.rules')}</button>
+                  {t('auth.acceptTerms')}
                 </label>
                 {errors().acceptTerms && <span class="error-message">{errors().acceptTerms}</span>}
               </div>
@@ -269,7 +269,7 @@ function AuthForm(props: Props) {
                     disabled={isLoading()}
                   />
                   <span class="checkmark"></span>
-                  {t('auth.acceptPrivacy')} <button type="button" class="link-button" onClick={() => setShowPrivacyModal(true)}>{t('auth.privacy')}</button>
+                  {t('auth.acceptPrivacy')}
                 </label>
                 {errors().acceptPrivacy && <span class="error-message">{errors().acceptPrivacy}</span>}
               </div>

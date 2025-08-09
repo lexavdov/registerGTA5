@@ -1,4 +1,5 @@
 import { createSignal, onMount } from 'solid-js'
+import { createStore } from 'solid-js/store'
 import { LanguageProvider } from './contexts/LanguageContext'
 import LoadingScreen from './components/LoadingScreen/LoadingScreen'
 import ActivityCheck from './components/ActivityCheck/ActivityCheck'
@@ -15,6 +16,8 @@ type AppState = 'loading' | 'activity-check' | 'auth' | 'character-menu' | 'char
 function App() {
   const [currentState, setCurrentState] = createSignal<AppState>('loading')
   const [characters, setCharacters] = createSignal<Character[]>([])
+  const [savedCharacterData, setSavedCharacterData] = createStore<any>({})
+  const [isAuthenticated, setIsAuthenticated] = createSignal(false)
   const [maxCharacters, setMaxCharacters] = createSignal(3)
   const [showBackground, setShowBackground] = createSignal(false)
   const [playMusic, setPlayMusic] = createSignal(false)
@@ -28,12 +31,45 @@ function App() {
   // Обработчик подтверждения активности
   const handleActivityConfirmed = () => {
     setPlayMusic(true) // Запускаем музыку после взаимодействия пользователя
-    setCurrentState('auth')
+    
+    // Проверяем сохраненную авторизацию
+    const savedAuth = localStorage.getItem('altv_auth_data')
+    const savedCharacter = localStorage.getItem('altv_character_data')
+    
+    if (savedAuth && savedCharacter) {
+      const authData = JSON.parse(savedAuth)
+      const characterData = JSON.parse(savedCharacter)
+      
+      setIsAuthenticated(true)
+      setSavedCharacterData(characterData)
+      setShowBackground(false)
+      
+      // Имитируем загрузку персонажей
+      const mockCharacters = [
+        {
+          id: 1,
+          name: characterData.nickname || 'Saved Character',
+          level: 1,
+          money: 5000,
+          lastPlayed: 'Сейчас',
+          playtime: 0
+        }
+      ]
+      setCharacters(mockCharacters)
+      setCurrentState('character-menu')
+    } else {
+      setCurrentState('auth')
+    }
   }
 
   // Обработчик успешной авторизации
   const handleAuthSuccess = (authData: AuthData) => {
     console.log('Auth success:', authData)
+    
+    // Сохраняем данные авторизации
+    localStorage.setItem('altv_auth_data', JSON.stringify(authData))
+    setIsAuthenticated(true)
+    
     setShowBackground(false) // Убираем фон после авторизации
     // @ts-ignore - Alt:V API
     if (typeof alt !== 'undefined') {
@@ -45,6 +81,11 @@ function App() {
   // Обработчик регистрации
   const handleRegister = (authData: AuthData & { email: string; referral?: string }) => {
     console.log('Register:', authData)
+    
+    // Сохраняем данные авторизации
+    localStorage.setItem('altv_auth_data', JSON.stringify(authData))
+    setIsAuthenticated(true)
+    
     setShowBackground(false) // Убираем фон после регистрации
     // @ts-ignore - Alt:V API
     if (typeof alt !== 'undefined') {
@@ -71,6 +112,11 @@ function App() {
   // Обработчик завершения создания персонажа
   const handleCharacterCreated = (characterData: any) => {
     console.log('Character created:', characterData)
+    
+    // Сохраняем данные персонажа
+    localStorage.setItem('altv_character_data', JSON.stringify(characterData))
+    setSavedCharacterData(characterData)
+    
     // @ts-ignore - Alt:V API
     if (typeof alt !== 'undefined') {
       alt.emit('character.create', characterData)
@@ -85,6 +131,12 @@ function App() {
 
   // Обработчик выхода
   const handleLogout = () => {
+    // Очищаем сохраненные данные
+    localStorage.removeItem('altv_auth_data')
+    localStorage.removeItem('altv_character_data')
+    setIsAuthenticated(false)
+    setSavedCharacterData({})
+    
     setShowBackground(true) // Возвращаем фон при выходе
     setCurrentState('auth')
     setCharacters([])
