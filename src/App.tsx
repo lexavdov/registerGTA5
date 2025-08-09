@@ -23,11 +23,11 @@ function App() {
   const handleLoadingComplete = () => {
     setCurrentState('activity-check')
     setShowBackground(true)
-    setPlayMusic(true)
   }
 
   // Обработчик подтверждения активности
   const handleActivityConfirmed = () => {
+    setPlayMusic(true) // Запускаем музыку после взаимодействия пользователя
     setCurrentState('auth')
   }
 
@@ -123,7 +123,7 @@ function App() {
   return (
     <LanguageProvider>
       <div class="app" style={{
-        'background-image': showBackground() ? 'url(/public/fon.jpg)' : 'none',
+        'background-image': showBackground() ? 'url(/fon.jpg)' : 'none',
         'background-size': 'cover',
         'background-position': 'center',
         'background-attachment': 'fixed'
