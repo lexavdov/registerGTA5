@@ -9,7 +9,7 @@ function BackgroundMusic(props: Props) {
 
   onMount(() => {
     // Создаем аудио элемент
-    const audioElement = new Audio('/background-music.mp3')
+    const audioElement = new Audio('public/background-music.mp3')
     audioElement.loop = true
     audioElement.volume = 0.3
     setAudio(audioElement)
