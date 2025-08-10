@@ -85,12 +85,16 @@
   align-items: flex-start;
   min-height: 100vh;
   padding-top: 120px;
-  padding: 120px 40px 0 40px;
+  padding: 120px 40px 40px 40px;
+  gap: 40px;
 }
 
 /* Left Menu Panel */
 .editor-left-panel {
   width: 350px;
+  position: fixed;
+  left: 40px;
+  top: 120px;
   background: rgba(45, 45, 45, 0.95);
   border: 1px solid rgba(0, 135, 54, 0.3);
   border-radius: 12px;
@@ -99,6 +103,7 @@
   flex-direction: column;
   max-height: calc(100vh - 200px);
   box-shadow: 0 0 30px rgba(0, 135, 54, 0.2);
+  z-index: 50;
 }
 
 .editor-left-header {
@@ -194,6 +199,9 @@
 /* Menu Panel */
 .editor-menu-panel {
   width: 400px;
+  position: fixed;
+  right: 40px;
+  top: 120px;
   background: rgba(45, 45, 45, 0.95);
   border: 1px solid rgba(0, 135, 54, 0.3);
   border-radius: 12px;
@@ -202,6 +210,7 @@
   flex-direction: column;
   max-height: calc(100vh - 200px);
   box-shadow: 0 0 30px rgba(0, 135, 54, 0.2);
+  z-index: 50;
 }
 
 /* Panel Header */
@@ -476,15 +485,23 @@
 /* Responsive Design */
 @media (max-width: 1200px) {
   .editor-main {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    padding: 120px 20px 40px 20px;
   }
   
   .editor-left-panel,
   .editor-menu-panel {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
     width: 100%;
-    max-width: 500px;
+    max-width: 400px;
+    margin: 0 auto 20px auto;
+  }
+  
+  .editor-main {
+    flex-direction: column;
+    align-items: center;
   }
 }
 
@@ -499,6 +516,18 @@
   
   .editor-main {
     padding: 100px 20px 0;
+  }
+  
+  .editor-left-panel {
+    left: 20px;
+    width: calc(100vw - 40px);
+    max-width: 350px;
+  }
+  
+  .editor-menu-panel {
+    right: 20px;
+    width: calc(100vw - 40px);
+    max-width: 400px;
   }
   
   .editor-create-section {

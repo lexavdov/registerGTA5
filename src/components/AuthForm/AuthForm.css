@@ -297,3 +297,17 @@
   color: #FFC107;
   font-weight: 600;
 }
+
+.nickname-hint {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  margin: 10px 0 0 0;
+}
+
+.password-strength {
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* Responsive Design */

@@ -117,6 +117,19 @@ function App() {
     localStorage.setItem('altv_character_data', JSON.stringify(characterData))
     setSavedCharacterData(characterData)
     
+    // Создаем новый персонаж в списке
+    const newCharacter = {
+      id: Date.now(), // Временный ID
+      name: characterData.nickname,
+      level: 1,
+      money: 5000,
+      lastPlayed: 'Только что',
+      playtime: 0
+    }
+    
+    // Добавляем персонажа в список
+    setCharacters(prev => [...prev, newCharacter])
+    
     // @ts-ignore - Alt:V API
     if (typeof alt !== 'undefined') {
       alt.emit('character.create', characterData)

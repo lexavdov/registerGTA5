@@ -26,8 +26,29 @@ function AuthForm(props: Props) {
   const [isLoading, setIsLoading] = createSignal(false)
   const [showRulesModal, setShowRulesModal] = createSignal(false)
   const [showPrivacyModal, setShowPrivacyModal] = createSignal(false)
+  const [passwordStrength, setPasswordStrength] = createSignal('')
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  
+  const validatePassword = (password: string) => {
+    if (password.length < 6) return 'Минимум 6 символов'
+    if (password.length < 8) return 'Слабый пароль'
+    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password)) return 'Средний пароль'
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) return 'Хороший пароль'
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(password)) return 'Сильный пароль'
+    return 'Очень сильный пароль'
+  }
+  
+  const getPasswordStrengthColor = (strength: string) => {
+    switch (strength) {
+      case 'Слабый пароль': return '#ff4757'
+      case 'Средний пароль': return '#ffa502'
+      case 'Хороший пароль': return '#2ed573'
+      case 'Сильный пароль': return '#1e90ff'
+      case 'Очень сильный пароль': return '#5f27cd'
+      default: return '#ff4757'
+    }
+  }
 
   // Загрузка сохраненного логина
   onMount(() => {
@@ -69,7 +90,7 @@ function AuthForm(props: Props) {
 
     if (!login().trim()) newErrors.login = ' '
     if (!password().trim()) newErrors.password = ' '
-    else if (password().length < 6) newErrors.password = 'Минимум 6 символов'
+    else if (password().length < 6) newErrors.password = t('auth.password.tooShort')
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
@@ -98,15 +119,15 @@ function AuthForm(props: Props) {
     e.preventDefault()
     const newErrors: Record<string, string> = {}
 
-    if (!login().trim()) newErrors.login = 'Логин обязателен'
-    if (!email().trim()) newErrors.email = 'Email обязателен'
-    else if (!validateEmail(email())) newErrors.email = 'Некорректный email'
-    if (!password().trim()) newErrors.password = 'Пароль обязателен'
-    else if (password().length < 6) newErrors.password = 'Минимум 6 символов'
-    if (!confirmPassword().trim()) newErrors.confirmPassword = 'Подтвердите пароль'
-    else if (password() !== confirmPassword()) newErrors.confirmPassword = 'Пароли не совпадают'
-    if (!acceptTerms()) newErrors.acceptTerms = 'Примите правила'
-    if (!acceptPrivacy()) newErrors.acceptPrivacy = 'Примите политику'
+    if (!login().trim()) newErrors.login = t('auth.login.required')
+    if (!email().trim()) newErrors.email = t('auth.email.required')
+    else if (!validateEmail(email())) newErrors.email = t('auth.email.invalid')
+    if (!password().trim()) newErrors.password = t('auth.password.required')
+    else if (password().length < 6) newErrors.password = t('auth.password.tooShort')
+    if (!confirmPassword().trim()) newErrors.confirmPassword = t('auth.confirmPassword.required')
+    else if (password() !== confirmPassword()) newErrors.confirmPassword = t('auth.confirmPassword.mismatch')
+    if (!acceptTerms()) newErrors.acceptTerms = t('auth.acceptTerms.required')
+    if (!acceptPrivacy()) newErrors.acceptPrivacy = t('auth.acceptPrivacy.required')
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
@@ -193,7 +214,7 @@ function AuthForm(props: Props) {
                   value={login()}
                   onInput={(e) => setLogin(e.currentTarget.value)}
                   class={`form-input ${errors().login ? 'error' : ''}`}
-                  placeholder="Логин"
+                  placeholder={t('auth.login.placeholder')}
                   disabled={isLoading()}
                 />
                 {errors().login && <span class="error-message">{errors().login}</span>}
@@ -221,6 +242,11 @@ function AuthForm(props: Props) {
                   disabled={isLoading()}
                 />
                 {errors().password && <span class="error-message">{errors().password}</span>}
+                {mode() === 'register' && password() && (
+                  <div class="password-strength" style={{ color: getPasswordStrengthColor(validatePassword(password())) }}>
+                    {validatePassword(password())}
+                  </div>
+                )}
               </div>
 
               <div class="form-group">
