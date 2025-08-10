@@ -1,4 +1,5 @@
-import { createSignal, createStore, For, Show } from 'solid-js'
+import { createSignal, For, Show } from 'solid-js'
+import { createStore } from 'solid-js/store'
 import { CharacterData, TabType, defaultCharacterData } from '../../types'
 import { generateRandomCharacter } from '../../utils/randomCharacter'
 import CharacterTab from '../CharacterTab/CharacterTab'
